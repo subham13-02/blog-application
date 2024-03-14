@@ -3,7 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../static/blog.css">
+    <style>
+        *{
+            padding:0;
+            margin:0;
+            border-sizing:border-box;
+            font-size:1.5 rem;
+        }
+        body{
+            padding:5%;
+            text-align:center;
+        }
+        nav{
+            display:flex;
+            justify-content:space-between;
+        }
+        .blog-container{
+            width:100%;
+        }
+        .heading p{
+            font-size:0.7rem;
+        }
+        .heading{
+            text-align:center;
+            margin:2rem;
+        }
+        blog{
+            text-align: justify;
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -12,14 +40,14 @@
     </nav>
     <div class="blog-container">
         <div class="heading">
-            <h1>Blog post title</h1>
+            <h1 th:text="post:${post.title}"></h1>
             <p>Subham Sahu, 18/03/20024</p>
         </div>
-        <blog>
+        <content>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et malesuada fames ac turpis egestas integer eget. Habitasse platea dictumst quisque sagittis purus sit amet. Pretium vulputate sapien nec sagittis aliquam malesuada bibendum. Arcu non odio euismod lacinia at. Aliquam nulla facilisi cras fermentum odio. Ornare aenean euismod elementum nisi quis. Nec sagittis aliquam malesuada bibendum arcu vitae. Posuere ac ut consequat semper viverra nam. Tincidunt augue interdum velit euismod. Amet mauris commodo quis imperdiet massa tincidunt nunc. Nibh tellus molestie nunc non blandit massa.
 
             Nam at lectus urna duis convallis convallis. Mi tempus imperdiet nulla malesuada. Amet purus gravida quis blandit turpis cursus in hac. Vulputate enim nulla aliquet porttitor lacus. Massa ultricies mi quis hendrerit dolor magna eget. Penatibus et magnis dis parturient montes nascetur ridiculus mus mauris. Pretium vulputate sapien nec sagittis aliquam malesuada. Risus nullam eget felis eget nunc lobortis mattis aliquam faucibus. Condimentum mattis pellentesque id nibh tortor id aliquet lectus. Nunc consequat interdum varius sit amet mattis vulputate. Magna etiam tempor orci eu lobortis elementum nibh tellus molestie. Tincidunt id aliquet risus feugiat in ante metus dictum at. Velit euismod in pellentesque massa placerat duis. Tortor at auctor urna nunc id cursus. Dignissim sodales ut eu sem integer. Sem nulla pharetra diam sit amet nisl. Nec feugiat in fermentum posuere urna. At auctor urna nunc id cursus metus aliquam. Eu volutpat odio facilisis mauris sit amet massa.
-        </blog>
+        </content>
     </div>
 </body>
 </html>

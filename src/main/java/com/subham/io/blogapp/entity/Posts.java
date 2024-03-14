@@ -3,6 +3,7 @@ package com.subham.io.blogapp.entity;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -52,27 +53,17 @@ public class Posts {
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private List<Tags> tags;
+    private Set<Tags> tags;
     public Posts(){
 
     }
 
-//    public Posts(String title, String content, List<Tags> tags) {
-//        this.title = title;
-//        this.content = content;
-//        this.tags = tags;
-//    }
+    public Posts(String title, String content, Set<Tags> tags) {
+        this.title = title;
+        this.content = content;
+        this.tags = tags;
+    }
 
-//    public Posts(int id, String title, String excerpt, String content, Date publishedAt, boolean isPublished, Date createdAt, Date updatedAt) {
-//        this.id = id;
-//        this.title = title;
-//        this.excerpt = excerpt;
-//        this.content = content;
-//        this.publishedAt = publishedAt;
-//        this.isPublished = isPublished;
-//        this.createdAt = createdAt;
-//        this.updatedAt = updatedAt;
-//    }
 
     public int getId() {
         return id;
@@ -153,11 +144,11 @@ public class Posts {
         this.authorId = authorId;
     }
 
-    public List<Tags> getTags() {
+    public Set<Tags> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tags> tags) {
+    public void setTags(Set<Tags> tags) {
         this.tags = tags;
     }
 
