@@ -59,4 +59,10 @@ public class PostsController {
         postsService.updateById(post.getId(), post);
         return "redirect:/";
     }
+    @GetMapping("/deletepost{postId}")
+    public String deletePost(@PathVariable("postId") int id, Model model) {
+        System.out.println("Deleted "+id);
+        postsService.deletePostById(id);
+        return "redirect:/";
+    }
 }

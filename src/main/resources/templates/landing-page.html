@@ -5,16 +5,24 @@
     <title>Landing Page</title>
     <style>
         .blog-card-container{
-            display:flex;
-            row-gap:1rem;
+        background-color:red;
+            width:100%;
+            display: flex;
+
+            gap: 1rem;
+<!--            justify-items: center;-->
+<!--            align-items: center;-->
         }
         .blog-card {
-            text-decoration: none;
+                background-color:blue;
             border: 2px solid black;
-            color: black;
             padding: 10px;
             width: 300px;
             height:180px;
+        }
+        .blog-card a{
+            text-decoration: none;
+            color: black;
         }
         .heading {
             margin-bottom: 10px;
@@ -56,14 +64,16 @@
     </div>
 </nav>
 <div class="blog-card-container" th:each="post:${posts}" >
-    <a th:href="@{'/post'+${post.id}}" class="blog-card">
-        <div class="heading">
-            <h4 th:text="${post.title}" >My Blog Application</h4>
-            <p th:text="${post.authorId.name}"><span th:text="${post.publishedAt}"></span></p>
-        </div>
-        <div class="content" th:text="${post.excerpt}">
-        </div>
-    </a>
+    <div class="blog-card">
+        <a th:href="@{'/post'+${post.id}}">
+            <div class="heading">
+                <h4 th:text="${post.title}" >My Blog Application</h4>
+                <p th:text="${post.authorId.name}"><span th:text="${post.publishedAt}"></span></p>
+            </div>
+            <div class="content" th:text="${post.excerpt}">
+            </div>
+        </a>
+    </div>
 </div>
 </body>
 </html>

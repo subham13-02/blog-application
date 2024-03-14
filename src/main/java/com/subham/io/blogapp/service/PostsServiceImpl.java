@@ -3,6 +3,7 @@ package com.subham.io.blogapp.service;
 import com.subham.io.blogapp.dao.PostsRepository;
 import com.subham.io.blogapp.entity.Posts;
 import com.subham.io.blogapp.entity.User;
+import jakarta.transaction.Transactional;
 import org.hibernate.sql.exec.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class PostsServiceImpl implements PostsService {
     private PostsRepository postsRepository;
     Date date = new Date();
@@ -29,7 +31,7 @@ public class PostsServiceImpl implements PostsService {
         post.setPublished(true);
 
         String content = post.getContent();
-        if (content.length() > 30) {
+        if (content.length() > 150) {
             post.setExcerpt(content.substring(0, 150));
         } else {
             post.setExcerpt(content);
@@ -73,7 +75,6 @@ public class PostsServiceImpl implements PostsService {
         // Save the modified post back to the database
         postsRepository.save(existingPost);
     }
-
     @Override
     public void deletePostById(int id) {
         postsRepository.deleteById(id);
