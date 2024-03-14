@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Comments")
+@Table(name = "comments")
 public class Comments{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(name = "name")
     private String name;
@@ -18,9 +18,6 @@ public class Comments{
 
     @Column(name = "comment")
     private String comment;
-
-    @Column(name = "post_id")
-    private Long postId;
 
     @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
@@ -32,21 +29,20 @@ public class Comments{
     public Comments(){
 
     }
-    public Comments(Long id, String name, String email, String comment, Long postId, Date createdAt, Date updatedAt) {
+    public Comments(int id, String name, String email, String comment, Date createdAt, Date updatedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.comment = comment;
-        this.postId = postId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -74,14 +70,6 @@ public class Comments{
         this.comment = comment;
     }
 
-    public Long getPostId() {
-        return postId;
-    }
-
-    public void setPostId(Long postId) {
-        this.postId = postId;
-    }
-
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -105,7 +93,6 @@ public class Comments{
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", comment='" + comment + '\'' +
-                ", postId=" + postId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

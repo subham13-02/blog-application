@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Posts")
+@Table(name = "posts")
 public class Posts {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +20,7 @@ public class Posts {
     @Column(name = "content")
     private String content;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-                CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "author_id")
     private User authorId;
 
@@ -41,21 +39,40 @@ public class Posts {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    List<Comments> comments;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "post_id")
+    private List<Comments> comments;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.MERGE, CascadeType.DETACH,
+                    CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JoinTable(
+            name = "post_tags",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tags> tags;
     public Posts(){
 
     }
-    public Posts(int id, String title, String excerpt, String content, User author, Date publishedAt, boolean isPublished, Date createdAt, Date updatedAt) {
-        this.id = id;
-        this.title = title;
-        this.excerpt = excerpt;
-        this.content = content;
-        this.authorId = author;
-        this.publishedAt = publishedAt;
-        this.isPublished = isPublished;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
+
+//    public Posts(String title, String content, List<Tags> tags) {
+//        this.title = title;
+//        this.content = content;
+//        this.tags = tags;
+//    }
+
+//    public Posts(int id, String title, String excerpt, String content, Date publishedAt, boolean isPublished, Date createdAt, Date updatedAt) {
+//        this.id = id;
+//        this.title = title;
+//        this.excerpt = excerpt;
+//        this.content = content;
+//        this.publishedAt = publishedAt;
+//        this.isPublished = isPublished;
+//        this.createdAt = createdAt;
+//        this.updatedAt = updatedAt;
+//    }
 
     public int getId() {
         return id;
@@ -89,14 +106,6 @@ public class Posts {
         this.content = content;
     }
 
-    public User getAuthor() {
-        return authorId;
-    }
-
-    public void setAuthor(User author) {
-        this.authorId = author;
-    }
-
     public Date getPublishedAt() {
         return publishedAt;
     }
@@ -112,7 +121,6 @@ public class Posts {
     public void setPublished(boolean published) {
         isPublished = published;
     }
-
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -145,6 +153,14 @@ public class Posts {
         this.authorId = authorId;
     }
 
+    public List<Tags> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tags> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public String toString() {
         return "Posts{" +
@@ -152,7 +168,6 @@ public class Posts {
                 ", title='" + title + '\'' +
                 ", excerpt='" + excerpt + '\'' +
                 ", content='" + content + '\'' +
-                ", author=" + authorId +
                 ", publishedAt=" + publishedAt +
                 ", isPublished=" + isPublished +
                 ", createdAt=" + createdAt +

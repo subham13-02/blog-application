@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,14 +19,13 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "authorId")
+    @OneToMany(mappedBy ="authorId" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Posts> posts;
 
     public User(){
 
     }
-    public User(int id, String name, String email, String password) {
-        this.id = id;
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;

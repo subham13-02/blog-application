@@ -1,9 +1,10 @@
 package com.subham.io.blogapp.entity;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "Tags")
+@Table(name = "tags")
 public class Tags {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,15 +21,32 @@ public class Tags {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.MERGE, CascadeType.DETACH,
+                    CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JoinTable(
+            name = "post_tags",
+            joinColumns = @JoinColumn(name = "tag_id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id")
+    )
+    List<Posts> posts;
+
+
     public Tags(){
 
     }
-    public Tags(int id, String name, Date createdAt, Date updatedAt) {
-        this.id = id;
+
+    public Tags(String name) {
         this.name = name;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
+
+//    public Tags(int id, String name, Date createdAt, Date updatedAt) {
+//        this.id = id;
+//        this.name = name;
+//        this.createdAt = createdAt;
+//        this.updatedAt = updatedAt;
+//    }
 
     public int getId() {
         return id;
@@ -62,14 +80,22 @@ public class Tags {
         this.updatedAt = updatedAt;
     }
 
-    @Override
-    public String toString() {
-        return "Tags{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+    public List<Posts> getPosts() {
+        return posts;
     }
+
+    public void setPosts(List<Posts> posts) {
+        this.posts = posts;
+    }
+
+//    @Override
+//    public String toString() {
+//        return "Tags{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", createdAt=" + createdAt +
+//                ", updatedAt=" + updatedAt +
+//                '}';
+//    }
 }
 

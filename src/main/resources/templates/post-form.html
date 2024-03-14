@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog Post</title>
+    <link rel="stylesheet" href="../static/post-form.css">
+</head>
+<body>
+    <div class="post-container">
+        <h1>New/Edit Post</h1>
+        <form th:action="@{/savePost}" method="post" class="form" th:object="${post}">
+            <input type="text" th:field="*{title}" placeholder="Title">
+            <input type="text" th:field="*{tags}"  placeholder="Tags">
+            <textarea th:field="*{content}" placeholder="Write Here..."></textarea>
+            <input type="submit" value="Publish">
+        </form>
+    </div>
+</body>
+</html>
