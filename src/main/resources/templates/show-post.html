@@ -22,7 +22,7 @@
             width:100%;
         }
         .heading p{
-            font-size:0.7rem;
+            font-size:0.8rem;
         }
         .heading{
             text-align:center;
@@ -40,14 +40,18 @@
     </nav>
     <div class="blog-container">
         <div class="heading">
-            <h1 th:text="post:${post.title}"></h1>
-            <p>Subham Sahu, 18/03/20024</p>
+            <h1 th:text="${post.title}"></h1>
+            <p th:text="${post.authorId.name}+'  '+${post.publishedAt}"></p>
         </div>
-        <content>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et malesuada fames ac turpis egestas integer eget. Habitasse platea dictumst quisque sagittis purus sit amet. Pretium vulputate sapien nec sagittis aliquam malesuada bibendum. Arcu non odio euismod lacinia at. Aliquam nulla facilisi cras fermentum odio. Ornare aenean euismod elementum nisi quis. Nec sagittis aliquam malesuada bibendum arcu vitae. Posuere ac ut consequat semper viverra nam. Tincidunt augue interdum velit euismod. Amet mauris commodo quis imperdiet massa tincidunt nunc. Nibh tellus molestie nunc non blandit massa.
-
-            Nam at lectus urna duis convallis convallis. Mi tempus imperdiet nulla malesuada. Amet purus gravida quis blandit turpis cursus in hac. Vulputate enim nulla aliquet porttitor lacus. Massa ultricies mi quis hendrerit dolor magna eget. Penatibus et magnis dis parturient montes nascetur ridiculus mus mauris. Pretium vulputate sapien nec sagittis aliquam malesuada. Risus nullam eget felis eget nunc lobortis mattis aliquam faucibus. Condimentum mattis pellentesque id nibh tortor id aliquet lectus. Nunc consequat interdum varius sit amet mattis vulputate. Magna etiam tempor orci eu lobortis elementum nibh tellus molestie. Tincidunt id aliquet risus feugiat in ante metus dictum at. Velit euismod in pellentesque massa placerat duis. Tortor at auctor urna nunc id cursus. Dignissim sodales ut eu sem integer. Sem nulla pharetra diam sit amet nisl. Nec feugiat in fermentum posuere urna. At auctor urna nunc id cursus metus aliquam. Eu volutpat odio facilisis mauris sit amet massa.
-        </content>
+        <content th:text="${post.content}"></content>
+    </div>
+    <div>
+        <a th:href="@{'/editpost'+${post.id}}" class="">
+            <input type="submit" value="Edit">
+        </a>
+        <a th:href="@{'/deletepost'+${post.id}}" class="">
+            <input type="submit" value="Delete">
+        </a>
     </div>
 </body>
 </html>

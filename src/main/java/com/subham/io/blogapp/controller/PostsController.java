@@ -7,41 +7,56 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
 public class PostsController {
     private PostsService postsService;
-
     public PostsController(PostsService postsService) {
         this.postsService = postsService;
     }
 
     @GetMapping("/")
-    public String showLandingPage(Model model){
-        List<Posts> posts=postsService.fetchAllPost();
-        model.addAttribute("posts",posts);
+    public String showLandingPage(Model model) {
+        List<Posts> posts = postsService.fetchAllPost();
+        model.addAttribute("posts", posts);
         return "landing-page";
     }
+
     @GetMapping("/newpost")
-    public String showForm(Model theModel){
+    public String showForm(Model theModel) {
         Posts posts = new Posts();
-        theModel.addAttribute("post",posts);
+        theModel.addAttribute("post", posts);
         return "post-form";
     }
-    @PostMapping("/savePost")
-    public String savePosts(@ModelAttribute("post") Posts posts){
+
+    @PostMapping("/savepost")
+    public String savePosts(@ModelAttribute("post") Posts post) {
         System.out.println("saved");
-        User user=new User("virat","virat@gmail.com","1234");
-        posts.setAuthorId(user);
-        postsService.save(posts);
-        return "redirect:/newpost";
+
+        postsService.save(post);
+        return "redirect:/";
     }
+
     @GetMapping("/post{postId}")
-    public String showPost(@PathVariable("postId")int id, Model model) {
-        System.out.println("inside  show post");
+    public String showPost(@PathVariable("postId") int id, Model model) {
         Posts post = postsService.fetchPostById(id);
         model.addAttribute("post", post);
         return "show-post";
+    }
+
+    @GetMapping("/editpost{postId}")
+    public String editPost(@PathVariable("postId") int id, Model model) {
+        Posts post = postsService.fetchPostById(id);
+        model.addAttribute("post",post);
+        return "post-form";
+    }
+    @PostMapping("/updatepost{postId}")
+    public String updatePosts(@PathVariable("postId") int id, @ModelAttribute("post")Posts post) {
+        post.setId(id);
+        System.out.println("Updated"+ post);
+        postsService.updateById(post.getId(), post);
+        return "redirect:/";
     }
 }

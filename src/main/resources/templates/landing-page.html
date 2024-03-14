@@ -61,7 +61,7 @@
             <h4 th:text="${post.title}" >My Blog Application</h4>
             <p th:text="${post.authorId.name}"><span th:text="${post.publishedAt}"></span></p>
         </div>
-        <div class="content" th:text="${post.content}">
+        <div class="content" th:text="${post.excerpt}">
         </div>
     </a>
 </div>

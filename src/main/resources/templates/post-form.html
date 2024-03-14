@@ -45,11 +45,12 @@
 <body>
     <div class="post-container">
         <h1>New/Edit Post</h1>
-        <form th:action="@{/savePost}" method="post" class="form" th:object="${post}">
+<!--        @{'/editpost'+${post.id}}"-->
+        <form th:action="${post.isPublished}? @{'/updatepost'+${post.id}} : @{/savepost}" method="POST" class="form" th:object="${post}">
             <input type="text" th:field="*{title}" placeholder="Title">
             <input type="text" th:field="*{tags}"  placeholder="Tags">
             <textarea th:field="*{content}" placeholder="Write Here..."></textarea>
-            <input type="submit" value="Publish">
+            <input type="submit" th:value="${post.isPublished}?'Edit':'Publish'">
         </form>
     </div>
 </body>

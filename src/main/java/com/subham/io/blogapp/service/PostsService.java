@@ -7,6 +7,9 @@ import java.util.List;
 public interface PostsService {
     void save(Posts posts);
     List<Posts> fetchAllPost();
-
     Posts fetchPostById(int id);
+
+    void updateById(int id,Posts post);
+
+    void deletePostById(int id);
 }

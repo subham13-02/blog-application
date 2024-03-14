@@ -88,14 +88,9 @@ public class Tags {
         this.posts = posts;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Tags{" +
-//                "id=" + id +
-//                ", name='" + name + '\'' +
-//                ", createdAt=" + createdAt +
-//                ", updatedAt=" + updatedAt +
-//                '}';
-//    }
+    @Override
+    public String toString() {
+        return name;
+    }
 }
 
