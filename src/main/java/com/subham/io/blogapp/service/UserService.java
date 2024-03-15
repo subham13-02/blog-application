@@ -1,5 +1,8 @@
 package com.subham.io.blogapp.service;
 
-public interface UserService {
+import com.subham.io.blogapp.entity.Comment;
+import com.subham.io.blogapp.entity.User;
 
+public interface UserService {
+    User getUserByPostId(int postId);
 }

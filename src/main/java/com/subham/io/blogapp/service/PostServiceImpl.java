@@ -1,10 +1,10 @@
 package com.subham.io.blogapp.service;
 
-import com.subham.io.blogapp.dao.PostsRepository;
-import com.subham.io.blogapp.entity.Posts;
+import com.subham.io.blogapp.dao.PostRepository;
+import com.subham.io.blogapp.entity.Comment;
+import com.subham.io.blogapp.entity.Post;
 import com.subham.io.blogapp.entity.User;
 import jakarta.transaction.Transactional;
-import org.hibernate.sql.exec.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +14,18 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class PostsServiceImpl implements PostsService {
-    private PostsRepository postsRepository;
+public class PostServiceImpl implements PostService {
+
+    private PostRepository postRepository;
+    private UserService userService;
     Date date = new Date();
     @Autowired
-    public PostsServiceImpl(PostsRepository postsRepository) {
-        this.postsRepository = postsRepository;
+    public PostServiceImpl(PostRepository postRepository) {
+        this.postRepository = postRepository;
     }
     @Override
-    public void save(Posts post) {
-        User user = new User("sub", "sub@gmail.com", "sub");
+    public void publish(Post post) {
+        User user =userService.getUserByPostId(1);
         post.setAuthorId(user);
         post.setCreatedAt(date);
         post.setUpdatedAt(date);
@@ -36,19 +38,18 @@ public class PostsServiceImpl implements PostsService {
         } else {
             post.setExcerpt(content);
         }
-        postsRepository.save(post);
+        postRepository.save(post);
     }
 
     @Override
-    public List<Posts> fetchAllPost() {
-        List<Posts> posts=postsRepository.findAll();
+    public List<Post> fetchAllPost() {
+        List<Post> posts= postRepository.findAll();
         return posts;
     }
-
     @Override
-    public Posts fetchPostById(int id){
-        Optional<Posts> result = postsRepository.findById(id);
-        Posts post = null;
+    public Post fetchPostById(int postId){
+        Optional<Post> result = postRepository.findById(postId);
+        Post post = null;
         if(result.isPresent()){
             post = result.get();
         }else {
@@ -56,27 +57,29 @@ public class PostsServiceImpl implements PostsService {
         }
         return post;
     }
-
     @Override
-    public void updateById(int id,Posts post) {
-        Optional<Posts> result = postsRepository.findById(id);
-        Posts existingPost = null;
+    public void updateById(int id, Post post) {
+        Optional<Post> result = postRepository.findById(id);
+        Post existingPost = null;
         if(result.isPresent()){
             existingPost = result.get();
         }else {
             throw new RuntimeException("No post found with Id: "+id);
         }
-        // Modify the fields of the retrieved post with the new values
         existingPost.setTitle(post.getTitle());
         existingPost.setTags(post.getTags());
         existingPost.setContent(post.getContent());
-        existingPost.setPublished(post.isPublished());
-
-        // Save the modified post back to the database
-        postsRepository.save(existingPost);
+        String content = post.getContent();
+        if (content.length() > 150) {
+            existingPost.setExcerpt(content.substring(0, 150));
+        } else {
+            existingPost.setExcerpt(content);
+        }
+        postRepository.save(existingPost);
     }
     @Override
     public void deletePostById(int id) {
-        postsRepository.deleteById(id);
+        postRepository.deleteById(id);
     }
+
 }

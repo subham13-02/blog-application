@@ -1,5 +1,24 @@
 package com.subham.io.blogapp.service;
 
-public class UserServiceImpl implements UserService{
+import com.subham.io.blogapp.dao.UserRepository;
+import com.subham.io.blogapp.entity.Comment;
+import com.subham.io.blogapp.entity.User;
+import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+@Service
+public class UserServiceImpl implements UserService{
+    private UserRepository useRepository;
+    @Override
+    public User getUserByPostId(int id) {
+        Optional<User> result = useRepository.findById(id);
+        User user = null;
+        if(result.isPresent()){
+            user = result.get();
+        }else {
+            throw new RuntimeException("No post found with Id: "+id);
+        }
+        return user;
+    }
 }

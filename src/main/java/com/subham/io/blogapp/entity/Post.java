@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "posts")
-public class Posts {
+@Table(name = "post")
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -40,9 +40,9 @@ public class Posts {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
-    private List<Comments> comments;
+    private List<Comment> comment;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.MERGE, CascadeType.DETACH,
@@ -53,12 +53,12 @@ public class Posts {
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private Set<Tags> tags;
-    public Posts(){
+    private Set<Tag> tags;
+    public Post(){
 
     }
 
-    public Posts(String title, String content, Set<Tags> tags) {
+    public Post(String title, String content, Set<Tag> tags) {
         this.title = title;
         this.content = content;
         this.tags = tags;
@@ -128,12 +128,12 @@ public class Posts {
         this.updatedAt = updatedAt;
     }
 
-    public List<Comments> getComments() {
-        return comments;
+    public List<Comment> getComment() {
+        return comment;
     }
 
-    public void setComments(List<Comments> comments) {
-        this.comments = comments;
+    public void setComment(List<Comment> comment) {
+        this.comment = comment;
     }
 
     public User getAuthorId() {
@@ -144,11 +144,11 @@ public class Posts {
         this.authorId = authorId;
     }
 
-    public Set<Tags> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tags> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 

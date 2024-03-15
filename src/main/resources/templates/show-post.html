@@ -31,6 +31,23 @@
         blog{
             text-align: justify;
         }
+        .btn-container{
+            margin-top:3rem;
+        }
+        a{
+            text-decoration:none;
+
+        }
+        a input{
+            padding:0.5rem 1rem;
+            margin:0 1rem;
+        }
+        .addComment{
+            margin-top:2rem;
+        }
+        .comment-form input{
+            padding:0.5rem 1rem;
+        }
     </style>
 </head>
 <body>
@@ -43,15 +60,28 @@
             <h1 th:text="${post.title}"></h1>
             <p th:text="${post.authorId.name}+'  '+${post.publishedAt}"></p>
         </div>
-        <content th:text="${post.content}"></content>
+        <div th:text="${post.content}" class="excerpt"></div>
     </div>
-    <div>
+    <div class="btn-container">
         <a th:href="@{'/editpost'+${post.id}}" class="">
             <input type="submit" value="Edit">
         </a>
         <a th:href="@{'/deletepost'+${post.id}}" class="">
             <input type="submit" value="Delete">
         </a>
+    </div>
+    <div class="addComment">
+        <form th:action="@{'/addcomment'+${post.id}}" method="POST" class="comment-form" th:object="${comment}">
+<!--            <input type="text" th:field="${comment}" placeholder="Comment Here...">-->
+            <input type="submit" value="Add Comment">
+        </form>
+    </div>
+    <div class="comments-container" >
+        <div class="comment" th:each="comment:${post.getComment()}">
+            <h3 th:text="${comment.name}"></h3>
+            <p th:text="*{comment.email}"></p>
+            <div th:text="*{comment.comment}"></div>
+        </div>
     </div>
 </body>
 </html>

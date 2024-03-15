@@ -20,7 +20,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy ="authorId" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Posts> posts;
+    private List<Post> posts;
 
     public User(){
 
@@ -63,11 +63,11 @@ public class User {
         this.password = password;
     }
 
-    public List<Posts> getPosts() {
+    public List<Post> getPosts() {
         return posts;
     }
 
-    public void setPosts(List<Posts> posts) {
+    public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
 }

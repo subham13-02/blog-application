@@ -1,17 +1,23 @@
 package com.subham.io.blogapp.entity;
+
 import jakarta.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "tags")
-public class Tags {
+@Table(name = "comment")
+public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "comment")
+    private String comment;
 
     @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
@@ -21,32 +27,18 @@ public class Tags {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.MERGE, CascadeType.DETACH,
-                    CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JoinTable(
-            name = "post_tags",
-            joinColumns = @JoinColumn(name = "tag_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id")
-    )
-    List<Posts> posts;
 
-
-    public Tags(){
+    public Comment(){
 
     }
-
-    public Tags(String name) {
+    public Comment(int id, String name, String email, String comment, Date createdAt, Date updatedAt) {
+        this.id = id;
         this.name = name;
+        this.email = email;
+        this.comment = comment;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
-
-//    public Tags(int id, String name, Date createdAt, Date updatedAt) {
-//        this.id = id;
-//        this.name = name;
-//        this.createdAt = createdAt;
-//        this.updatedAt = updatedAt;
-//    }
 
     public int getId() {
         return id;
@@ -62,6 +54,22 @@ public class Tags {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Date getCreatedAt() {
@@ -80,17 +88,5 @@ public class Tags {
         this.updatedAt = updatedAt;
     }
 
-    public List<Posts> getPosts() {
-        return posts;
-    }
 
-    public void setPosts(List<Posts> posts) {
-        this.posts = posts;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
 }
-
