@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+            border-sizing:border-box;
+            font-size:1.5 rem;
+        }
+        body{
+            padding:5%;
+            text-align:center;
+        }
+        a{
+            text-decoration:none;
+        }
+        a input{
+            padding:0.5rem 1rem;
+            margin:0 1rem;
+        }
+        .addComment{
+            margin-top:2rem;
+        }
+        .comment-form input{
+            padding:0.5rem 1rem;
+        }
+        .comments-container{
+            margin-top:2rem;
+            text-align:start;
+            display:flex;
+        }
+        .comment {
+            padding:1rem;
+        }
+        .comment p{
+            font-size:0.7rem;
+            margin-bottom:0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="addComment">
+            <form th:action="@{'/addcomment'+${post.id}}" method="POST" class="comment-form" th:object="${newComment}">
+                <input type="text" th:field="${newComment.comment}" placeholder="Comment Here...">
+                <input type="submit" value="Add Comment">
+            </form>
+        </div>
+        <div class="comments-container" >
+            <div class="comment" th:each="comment:${post.getComment()}">
+                <h4 th:text="${comment.name}"></h4>
+                <p th:text="${comment.email}"></p>
+                <div th:text="${comment.comment}"></div>
+                <hr>
+            </div>
+            <div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

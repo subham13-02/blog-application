@@ -33,8 +33,8 @@ public class PostServiceImpl implements PostService {
         post.setPublished(true);
 
         String content = post.getContent();
-        if (content.length() > 150) {
-            post.setExcerpt(content.substring(0, 150));
+        if (content.length() >= 180) {
+            post.setExcerpt(content.substring(0, 180));
         } else {
             post.setExcerpt(content);
         }
@@ -70,8 +70,8 @@ public class PostServiceImpl implements PostService {
         existingPost.setTags(post.getTags());
         existingPost.setContent(post.getContent());
         String content = post.getContent();
-        if (content.length() > 150) {
-            existingPost.setExcerpt(content.substring(0, 150));
+        if (content.length() >= 180) {
+            existingPost.setExcerpt(content.substring(0, 180));
         } else {
             existingPost.setExcerpt(content);
         }
@@ -81,5 +81,4 @@ public class PostServiceImpl implements PostService {
     public void deletePostById(int id) {
         postRepository.deleteById(id);
     }
-
 }

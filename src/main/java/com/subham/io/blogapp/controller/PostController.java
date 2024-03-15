@@ -35,8 +35,8 @@ public class PostController {
     public String showPost(@PathVariable("postId") int postId, Model model) {
         Post post = postService.fetchPostById(postId);
         model.addAttribute("post", post);
-        List<Comment> comments = post.getComment();
-        model.addAttribute("comments",comments);
+        Comment comment = new Comment();
+        model.addAttribute("comment",comment);
         return "show-post";
     }
     @GetMapping("/editpost{postId}")

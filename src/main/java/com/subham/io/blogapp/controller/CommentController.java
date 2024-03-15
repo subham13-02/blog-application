@@ -16,22 +16,31 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
 public class CommentController{
-    private PostService postService;
     private CommentService commentService;
-
+    private PostService postService;
     @Autowired
-    public CommentController(PostService postService, CommentService commentService) {
-        this.postService = postService;
+    public CommentController(CommentService commentService, PostService postService) {
         this.commentService = commentService;
+        this.postService = postService;
     }
-
-    @PostMapping("/addcomment'{postId}")
-    public String addcomment(@PathVariable("postId") int postId, @ModelAttribute("comment") Comment comment) {
-        commentService.addComment(postId, comment);
-        return "show-post";
+    @GetMapping("/commentpost{postId}")
+    public String commentPost(@PathVariable("postId") int postId, Model model) {
+        System.out.println(" show comment of id : "+postId);
+        Post post=postService.fetchPostById(postId);
+        model.addAttribute("post",post);
+        Comment newComment=new Comment();
+        model.addAttribute("newComment",newComment);
+        return"comment-page";
+    }
+    @PostMapping("/addcomment{postId}")
+    public String addcomment(@PathVariable("postId") int postId, @ModelAttribute("newComment") Comment newComment) {
+        System.out.println("id : "+postId);
+        commentService.addComment(postId, newComment);
+        return "redirect:/commentpost"+postId;
     }
 }

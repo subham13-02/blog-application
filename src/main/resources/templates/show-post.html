@@ -66,22 +66,12 @@
         <a th:href="@{'/editpost'+${post.id}}" class="">
             <input type="submit" value="Edit">
         </a>
+        <a th:href="@{'/commentpost'+${post.id}}" class="">
+            <input type="submit" value="Comment">
+        </a>
         <a th:href="@{'/deletepost'+${post.id}}" class="">
             <input type="submit" value="Delete">
         </a>
-    </div>
-    <div class="addComment">
-        <form th:action="@{'/addcomment'+${post.id}}" method="POST" class="comment-form" th:object="${comment}">
-<!--            <input type="text" th:field="${comment}" placeholder="Comment Here...">-->
-            <input type="submit" value="Add Comment">
-        </form>
-    </div>
-    <div class="comments-container" >
-        <div class="comment" th:each="comment:${post.getComment()}">
-            <h3 th:text="${comment.name}"></h3>
-            <p th:text="*{comment.email}"></p>
-            <div th:text="*{comment.comment}"></div>
-        </div>
     </div>
 </body>
 </html>

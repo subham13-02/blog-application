@@ -57,14 +57,11 @@ public class Post {
     public Post(){
 
     }
-
     public Post(String title, String content, Set<Tag> tags) {
         this.title = title;
         this.content = content;
         this.tags = tags;
     }
-
-
     public int getId() {
         return id;
     }
