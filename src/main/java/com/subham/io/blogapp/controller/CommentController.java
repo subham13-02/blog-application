@@ -35,12 +35,28 @@ public class CommentController{
         model.addAttribute("post",post);
         Comment newComment=new Comment();
         model.addAttribute("newComment",newComment);
+        model.addAttribute("postId",postId);
         return"comment-page";
     }
     @PostMapping("/addcomment{postId}")
     public String addcomment(@PathVariable("postId") int postId, @ModelAttribute("newComment") Comment newComment) {
         System.out.println("id : "+postId);
         commentService.addComment(postId, newComment);
+        return "redirect:/commentpost"+postId;
+    }
+
+    @GetMapping("/editcomment{commentId}")
+    public String editComment(@PathVariable("commentId") int commentId) {
+        System.out.println(" edit comment of id : "+commentId);
+        commentService.editCommentById(commentId);
+
+        return "commentpost";
+    }
+    @GetMapping("/deletecomment{commentId}")
+    public String deleteComment(@PathVariable("commentId") int commentId) {
+        System.out.println(" delete comment of id : "+commentId);
+        int postId=commentService.getPostIdByCommentId(commentId);
+        commentService.deleteCommentById(commentId);
         return "redirect:/commentpost"+postId;
     }
 }

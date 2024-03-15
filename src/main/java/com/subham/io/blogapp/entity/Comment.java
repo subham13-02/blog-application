@@ -19,6 +19,8 @@ public class Comment {
     @Column(name = "comment")
     private String comment;
 
+    @Column(name = "post_id")
+    private int postId;
     @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -31,11 +33,13 @@ public class Comment {
     public Comment(){
 
     }
-    public Comment(int id, String name, String email, String comment, Date createdAt, Date updatedAt) {
+
+    public Comment(int id, String name, String email, String comment, int postId, Date createdAt, Date updatedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.comment = comment;
+        this.postId = postId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -86,6 +90,14 @@ public class Comment {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
     @Override
