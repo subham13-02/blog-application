@@ -14,4 +14,6 @@ public interface PostService {
     void updateById(int postId, Post post);
 
     void deletePostById(int postId);
+
+    List<Post> search(String searchQuery);
 }

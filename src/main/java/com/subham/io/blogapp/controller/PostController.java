@@ -14,9 +14,6 @@ public class PostController {
     private PostService postService;
     private UserService userService;
     private CommentService commentService;
-//    public PostController(PostService postService) {
-//        this.postService = postService;
-//    }
 
     public PostController(PostService postService, UserService userService, CommentService commentService) {
         this.postService = postService;
@@ -28,6 +25,7 @@ public class PostController {
     public String showLandingPage(Model model) {
         List<Post> posts = postService.fetchAllPost();
         model.addAttribute("posts", posts);
+        model.addAttribute("searchResults", "");
         return "landing-page";
     }
     @GetMapping("/newpost")
@@ -68,5 +66,13 @@ public class PostController {
         System.out.println("Deleted "+postId);
         postService.deletePostById(postId);
         return "redirect:/";
+    }
+    @PostMapping("/search")
+    public String search(@RequestParam(name="searchQuery") String searchQuery, Model model) {
+        System.out.println("Search :"+searchQuery );
+        List<Post> searchResults = postService.search(searchQuery);
+        model.addAttribute("posts", searchResults);
+        model.addAttribute("searchResults", searchQuery);
+        return "landing-page";
     }
 }

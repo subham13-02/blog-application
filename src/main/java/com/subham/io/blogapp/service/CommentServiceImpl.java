@@ -77,7 +77,6 @@ public class CommentServiceImpl implements CommentService {
         }
         return comment;
     }
-
     @Override
     public void updateComment(int postId, Comment currentComment) {
         Comment comment= getCommentDataByCommentId(currentComment.getId());
