@@ -20,8 +20,9 @@ public class PostServiceImpl implements PostService {
     private UserService userService;
     Date date = new Date();
     @Autowired
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository , UserService userService) {
         this.postRepository = postRepository;
+        this.userService = userService;
     }
     @Override
     public void publish(Post post) {

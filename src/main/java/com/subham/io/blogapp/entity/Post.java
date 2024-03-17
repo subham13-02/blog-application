@@ -1,6 +1,8 @@
 package com.subham.io.blogapp.entity;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -42,7 +44,7 @@ public class Post {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
-    private List<Comment> comment;
+    private List<Comment> comments;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.MERGE, CascadeType.DETACH,
@@ -125,12 +127,12 @@ public class Post {
         this.updatedAt = updatedAt;
     }
 
-    public List<Comment> getComment() {
-        return comment;
+    public List<Comment> getComments() {
+        return comments;
     }
 
-    public void setComment(List<Comment> comment) {
-        this.comment = comment;
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     public User getAuthorId() {
@@ -147,6 +149,13 @@ public class Post {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public void addComment(Comment theComment){
+        if(comments == null){
+            comments = new ArrayList<>();
+        }
+        comments.add(theComment);
     }
 
     @Override

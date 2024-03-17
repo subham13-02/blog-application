@@ -10,6 +10,11 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService{
     private UserRepository useRepository;
+
+    public UserServiceImpl(UserRepository useRepository) {
+        this.useRepository = useRepository;
+    }
+
     @Override
     public User getUserByPostId(int id) {
         Optional<User> result = useRepository.findById(id);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -42,17 +42,18 @@
 <body>
     <div class="main-container">
         <div class="comment-form-container">
-            <form th:action="@{'/addcomment'+${post.id}}" method="POST" class="comment-form" th:object="${newComment}">
-                <input type="text" th:field="${newComment.comment}" placeholder="Comment Here...">
-                <input type="submit" value="Add Comment">
+            <form th:action="@{'/addcomment'+${post.id}}" class="comment-form" th:object="${currentComment}" method="POST" >
+                <input type="hidden" th:field="*{id}" >
+                <input name="commentValue" type="text" th:field="*{commentText}" placeholder="Comment Here...">
+                <input type="submit" value="Comment">
             </form>
         </div>
         <h2>Comments</h2><hr>
-        <div class="comments-container" th:each="comment:${post.getComment()}">
+        <div class="comments-container" th:each="comment:${post.getComments()}">
             <div class="comment" >
                 <h4 th:text="${comment.name}"></h4>
                 <p th:text="${comment.email}"></p>
-                <div th:text="${comment.comment}"></div>
+                <div th:text="${comment.commentText}"></div>
             </div>
             <div class="action">
                 <a th:href="@{'/editcomment'+${comment.id}}" >

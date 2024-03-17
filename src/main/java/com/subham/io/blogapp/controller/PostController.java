@@ -2,7 +2,9 @@ package com.subham.io.blogapp.controller;
 
 import com.subham.io.blogapp.entity.Comment;
 import com.subham.io.blogapp.entity.Post;
+import com.subham.io.blogapp.service.CommentService;
 import com.subham.io.blogapp.service.PostService;
+import com.subham.io.blogapp.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +12,18 @@ import java.util.List;
 @Controller
 public class PostController {
     private PostService postService;
-    public PostController(PostService postService) {
+    private UserService userService;
+    private CommentService commentService;
+//    public PostController(PostService postService) {
+//        this.postService = postService;
+//    }
+
+    public PostController(PostService postService, UserService userService, CommentService commentService) {
         this.postService = postService;
+        this.userService = userService;
+        this.commentService = commentService;
     }
+
     @GetMapping("/")
     public String showLandingPage(Model model) {
         List<Post> posts = postService.fetchAllPost();

@@ -25,21 +25,18 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void addComment(int postId, Comment newComment) {
+    public void addComment(int postId, Comment comment) {
         Post post = postService.fetchPostById(postId);
-        List<Comment> comments = post.getComment();
-        newComment.setName(post.getAuthorId().getName());
-        newComment.setEmail(post.getAuthorId().getEmail());
-        newComment.setUpdatedAt(date);
-        newComment.setCreatedAt(date);
-        comments.add(newComment);
-        post.setComment(comments);
+        System.out.println("This is service comment");
+        List<Comment> comments = post.getComments();
+        comment.setName(post.getAuthorId().getName());
+        comment.setEmail(post.getAuthorId().getEmail());
+        comment.setUpdatedAt(date);
+        comment.setCreatedAt(date);
+        comments.add(comment);
+        post.setComments(comments);
+        System.out.println(comments);
         postRepository.save(post);
-    }
-    @Override
-    public void editCommentById(int commentId) {
-//        commentRepository.
-
     }
     @Override
     public void deleteCommentById(int commentId) {
@@ -48,7 +45,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public int getPostIdByCommentId(int commentId) {
-        System.out.println(commentId);
         Optional<Comment> result = commentRepository.findById(commentId);
         Comment comment=null;
         if(result.isPresent()){
@@ -59,7 +55,36 @@ public class CommentServiceImpl implements CommentService {
         int postId=comment.getPostId();
         return postId;
     }
+    @Override
+    public String getCommentByCommentId(int commentId) {
+        Optional<Comment> result = commentRepository.findById(commentId);
+        Comment comment=null;
+        if(result.isPresent()){
+            comment = result.get();
+        }else {
+            throw new RuntimeException("Comment id doesn't exist");
+        }
+        String commentText=comment.getCommentText();
+        return commentText;
+    }
+    public Comment getCommentDataByCommentId(int commentId) {
+        Optional<Comment> result = commentRepository.findById(commentId);
+        Comment comment=null;
+        if(result.isPresent()){
+            comment = result.get();
+        }else {
+            throw new RuntimeException("Comment id doesn't exist");
+        }
+        return comment;
+    }
 
-
+    @Override
+    public void updateComment(int postId, Comment currentComment) {
+        Comment comment= getCommentDataByCommentId(currentComment.getId());
+        comment.setUpdatedAt(date);
+        comment.setCommentText(currentComment.getCommentText());
+        System.out.println(comment);
+        commentRepository.save(comment);
+    }
 }
 

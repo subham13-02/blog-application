@@ -17,7 +17,7 @@ public class Comment {
     private String email;
 
     @Column(name = "comment")
-    private String comment;
+    private String commentText;
 
     @Column(name = "post_id")
     private int postId;
@@ -34,11 +34,11 @@ public class Comment {
 
     }
 
-    public Comment(int id, String name, String email, String comment, int postId, Date createdAt, Date updatedAt) {
+    public Comment(int id, String name, String email, String commentText, int postId, Date createdAt, Date updatedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.comment = comment;
+        this.commentText = commentText;
         this.postId = postId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -68,12 +68,20 @@ public class Comment {
         this.email = email;
     }
 
-    public String getComment() {
-        return comment;
+    public String getCommentText() {
+        return commentText;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setCommentText(String commentText) {
+        this.commentText = commentText;
+    }
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
     public Date getCreatedAt() {
@@ -92,21 +100,13 @@ public class Comment {
         this.updatedAt = updatedAt;
     }
 
-    public int getPostId() {
-        return postId;
-    }
-
-    public void setPostId(int postId) {
-        this.postId = postId;
-    }
-
     @Override
     public String toString() {
         return "Comment{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", comment='" + comment + '\'' +
+                ", commentText='" + commentText + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
