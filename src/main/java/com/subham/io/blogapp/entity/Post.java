@@ -2,10 +2,7 @@ package com.subham.io.blogapp.entity;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "post")

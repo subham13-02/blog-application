@@ -12,10 +12,11 @@
         .main{
             display:flex;
             width:100%;
-            padding:1rem;
+            padding-left:1rem;
         }
         .sidebar{
-            width:25%;
+            width:20%;
+            padding-left:5%;
         }
         .right-nav{
             display:flex;
@@ -58,6 +59,16 @@
             width:300px;
             padding: 5px;
         }
+        .filter{
+            height:200px;
+            overflow:auto;
+        }
+        form h3{
+            margin:0.5rem 0;
+        }
+        button{
+            padding:0.2rem 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -72,30 +83,35 @@
                 <option value="date">Published Date</option>
                 <option value="title">Title</option>
             </select>
-            <button type="submit">Apply</button>
+            <button type="submit">Sort</button>
         </form>
         <a href="/login">Login</a>
     </div>
 </nav>
 <div class="main">
     <div class="sidebar">
-        <h2>Filters</h2><br>
-        <form id="filterForm" th:target>
+        <h2>Filters</h2>
+        <form id="filterForm" th:action="@{/filter}" th:method="POST" class="filters-container">
             <h3>Tags</h3>
-            <label class="checkbox-label">
-                <input type="checkbox" name="option1" value="option1"> Option 1
-            </label>
-            <label class="checkbox-label">
-                <input type="checkbox" name="option2" value="option2"> Option 2
-            </label>
-            <label class="checkbox-label">
-                <input type="checkbox" name="option3" value="option3"> Option 3
-            </label>
-            <label class="checkbox-label">
-                <input type="checkbox" name="option4" value="option4"> Option 4
-            </label>
+            <div class="filter">
+                <div th:each="tag : ${tags}" >
+                    <input type="checkbox" th:name="selectedTags" th:value="${tag.name}">
+                    <span th:text="${tag.name}"></span>
+                </div>
+            </div>
+            <h3>Authors</h3>
+            <div class="filter">
+                <div th:each="author : ${authors}" >
+                    <input type="checkbox" th:name="selectedAuthor" th:value="${author.name}">
+                    <span th:text="${author.name}"></span>
+                </div>
+            </div>
+            <label>From:</label>
+            <input type="date" th:name="startingDate" th:value="${startingDate}">
             <br>
-            <br>
+            <label>To:</label>
+            <input type="date" th:name="endingDate" th:value="${endingDate}">
+            <br><br>
             <button type="submit">Apply Filters</button>
         </form>
     </div>

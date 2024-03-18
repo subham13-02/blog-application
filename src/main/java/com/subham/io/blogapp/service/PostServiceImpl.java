@@ -90,8 +90,7 @@ public class PostServiceImpl implements PostService {
             searchResults = postRepository.findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContainingOrderByPublishedAtDesc(searchQuery, searchQuery, searchQuery, searchQuery);
         }else if(sortBy.equals("title")){
             searchResults = postRepository.findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContainingOrderByTitle(searchQuery, searchQuery, searchQuery, searchQuery);
-        }
-        else{
+        } else{
             searchResults = postRepository.findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContaining(searchQuery, searchQuery, searchQuery, searchQuery);
         }
         return searchResults;

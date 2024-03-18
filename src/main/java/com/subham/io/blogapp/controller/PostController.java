@@ -2,13 +2,17 @@ package com.subham.io.blogapp.controller;
 
 import com.subham.io.blogapp.entity.Comment;
 import com.subham.io.blogapp.entity.Post;
+import com.subham.io.blogapp.entity.Tag;
+import com.subham.io.blogapp.entity.User;
 import com.subham.io.blogapp.service.CommentService;
 import com.subham.io.blogapp.service.PostService;
 import com.subham.io.blogapp.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
+import java.util.*;
+
 @Controller
 public class PostController {
     private PostService postService;
@@ -25,6 +29,21 @@ public class PostController {
     public String showLandingPage(Model model) {
         List<Post> posts = postService.fetchAllPost();
         model.addAttribute("posts", posts);
+        Set<Tag> tags = new HashSet<>();
+        for(Post post :posts){
+            if(post.getTags()!=null){
+                tags.addAll(post.getTags());
+            }
+        }
+        model.addAttribute("tags", tags);
+
+        List<User> authors = new ArrayList<>();
+        for(Post post :posts){
+            if(post.getAuthorId()!=null){
+                authors.add(post.getAuthorId());
+            }
+        }
+        model.addAttribute("authors", authors);
         return "landing-page";
     }
     @GetMapping("/newpost")
@@ -74,5 +93,23 @@ public class PostController {
         model.addAttribute("searchQuery", searchQuery);
         model.addAttribute("sortBy", sortBy);
         return "landing-page";
+    }
+    @PostMapping("/filter")
+    public String applyFilters(@RequestParam(name = "selectedTags") Set<String> selectedTags,
+                               @RequestParam(name = "selectedAuthor") List<String> selectedAuthor,
+                               @RequestParam(name = "startingDate") String startingDate,
+                               @RequestParam(name = "startingDate") String endingDate) {
+        if (selectedTags != null) {
+            for (String tag : selectedTags) {
+                System.out.println("Selected tag: " + tag);
+            }
+        }
+        if (selectedTags != null) {
+            for (String author : selectedAuthor) {
+                System.out.println("Selected author: " + author);
+            }
+        }
+        System.out.println(startingDate+ " "+ endingDate);
+        return "redirect:/";
     }
 }
