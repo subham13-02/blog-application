@@ -25,7 +25,6 @@ public class PostController {
     public String showLandingPage(Model model) {
         List<Post> posts = postService.fetchAllPost();
         model.addAttribute("posts", posts);
-        model.addAttribute("searchResults", "");
         return "landing-page";
     }
     @GetMapping("/newpost")
@@ -68,11 +67,12 @@ public class PostController {
         return "redirect:/";
     }
     @PostMapping("/search")
-    public String search(@RequestParam(name="searchQuery") String searchQuery, Model model) {
+    public String search(@RequestParam(name="searchQuery") String searchQuery, @RequestParam(name="sortBy") String sortBy, Model model) {
         System.out.println("Search :"+searchQuery );
-        List<Post> searchResults = postService.search(searchQuery);
+        List<Post> searchResults = postService.search(searchQuery,sortBy);
         model.addAttribute("posts", searchResults);
-        model.addAttribute("searchResults", searchQuery);
+        model.addAttribute("searchQuery", searchQuery);
+        model.addAttribute("sortBy", sortBy);
         return "landing-page";
     }
 }

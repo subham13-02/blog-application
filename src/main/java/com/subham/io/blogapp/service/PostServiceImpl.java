@@ -84,8 +84,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> search(String searchQuery) {
-        List<Post> searchResults = postRepository.findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContaining(searchQuery, searchQuery, searchQuery, searchQuery);
+    public List<Post> search(String searchQuery,String sortBy) {
+        List<Post> searchResults;
+        if(sortBy.equals("date")){
+            searchResults = postRepository.findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContainingOrderByPublishedAtDesc(searchQuery, searchQuery, searchQuery, searchQuery);
+        }else if(sortBy.equals("title")){
+            searchResults = postRepository.findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContainingOrderByTitle(searchQuery, searchQuery, searchQuery, searchQuery);
+        }
+        else{
+            searchResults = postRepository.findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContaining(searchQuery, searchQuery, searchQuery, searchQuery);
+        }
         return searchResults;
     }
 }

@@ -15,5 +15,5 @@ public interface PostService {
 
     void deletePostById(int postId);
 
-    List<Post> search(String searchQuery);
+    List<Post> search(String searchQuery, String sortBy);
 }

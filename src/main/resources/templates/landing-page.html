@@ -7,19 +7,28 @@
         *{
             padding:0;
             margin:0;
+            box-sizing: border-box;
+        }
+        .main{
+            display:flex;
             width:100%;
+            padding:1rem;
+        }
+        .sidebar{
+            width:25%;
         }
         .right-nav{
             display:flex;
             gap:1rem;
         }
         .blog-card-container{
-            margin-top:3rem;
             display:flex;
             justify-content:center;
             flex-wrap:wrap;
+            width:75%;
         }
         .blog-card {
+            margin-top:1rem;
             border: 2px solid black;
             padding: 10px;
             margin:10px;
@@ -33,16 +42,15 @@
         .heading {
             margin-bottom: 10px;
         }
-        .heading h4 {
-            font-size: 1.2em;
+        .heading p {
+            font-size:0.8rem;
         }
         .content {
             font-size: 1em;
             line-height: 1.4;
         }
         nav {
-            width:100%;
-            padding: 1rem 1rem;
+            margin: 1rem 1rem;
             display: flex;
             justify-content: space-between;
         }
@@ -57,22 +65,56 @@
     <h2>My Blog Application</h2>
     <div class="right-nav">
         <form th:action="@{/search}" method="POST">
-            <input type="search" th:name="searchQuery" th:value="${searchQuery}"  placeholder="search" >
+            <input type="search" name="searchQuery" th:value="${searchQuery}" placeholder="search">
+            <br><br>
+            <select name="sortBy">
+                <option value="">Sort by</option>
+                <option value="date">Published Date</option>
+                <option value="title">Title</option>
+            </select>
+            <button type="submit">Apply</button>
         </form>
         <a href="/login">Login</a>
     </div>
 </nav>
-<div class="blog-card-container" >
-    <div class="blog-card" th:each="post:${posts}">
-        <a th:href="@{'/post'+${post.id}}">
-            <div class="heading">
-                <h4 th:text="${post.title}" >My Blog Application</h4>
-                <p th:text="${post.authorId.name}"><span th:text="${post.publishedAt}"></span></p>
-            </div>
-            <div class="content" th:text="${post.excerpt}">
-            </div>
-        </a>
+<div class="main">
+    <div class="sidebar">
+        <h2>Filters</h2><br>
+        <form id="filterForm" th:target>
+            <h3>Tags</h3>
+            <label class="checkbox-label">
+                <input type="checkbox" name="option1" value="option1"> Option 1
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" name="option2" value="option2"> Option 2
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" name="option3" value="option3"> Option 3
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" name="option4" value="option4"> Option 4
+            </label>
+            <br>
+            <br>
+            <button type="submit">Apply Filters</button>
+        </form>
+    </div>
+    <div class="blog-card-container" >
+        <div class="blog-card" th:each="post:${posts}">
+            <a th:href="@{'/post'+${post.id}}">
+                <div class="heading">
+                    <h3 th:text="${post.title}" >My Blog Application</h3>
+                    <p>
+                        <span th:text="${post.authorId.name}"></span>
+                        <span th:text="'  '+${post.publishedAt}"></span>
+                    </p>
+                </div>
+                <div class="content" th:text="${post.excerpt}">
+                </div>
+            </a>
+        </div>
     </div>
 </div>
+
 </body>
 </html>

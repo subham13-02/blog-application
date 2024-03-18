@@ -30,6 +30,8 @@ public class CommentController{
         model.addAttribute("post",post);
         Comment comment = new Comment();
         model.addAttribute("currentComment",comment);
+        model.addAttribute("sortby","");
+//        model.addAttribute("filterby",comment);
         return"comment-page";
     }
     @PostMapping("/addcomment{postId}")

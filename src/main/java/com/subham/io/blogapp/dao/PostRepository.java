@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post,Integer> {
     List<Post> findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContaining(String title, String content, String authorName, String tagName);
+    List<Post> findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContainingOrderByPublishedAtDesc(String title, String content, String authorName, String tagName);
+    List<Post> findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContainingOrderByTitle(String title, String content, String authorName, String tagName);
 
 }
