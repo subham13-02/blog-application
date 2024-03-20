@@ -2,6 +2,7 @@ package com.subham.io.blogapp.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -25,19 +26,19 @@ public class Post {
     private User authorId;
 
     @Column(name = "published_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date publishedAt;
+    @Temporal(TemporalType.DATE)
+    private LocalDate publishedAt;
 
     @Column(name = "is_published")
     private boolean isPublished;
 
     @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    @Temporal(TemporalType.DATE)
+    private LocalDate createdAt;
 
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    @Temporal(TemporalType.DATE)
+    private LocalDate updatedAt;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
@@ -54,13 +55,22 @@ public class Post {
     )
     private Set<Tag> tags;
     public Post(){
-
     }
-    public Post(String title, String content, Set<Tag> tags) {
+
+    public Post(int id, String title, String excerpt, String content, User authorId, LocalDate publishedAt, boolean isPublished, LocalDate createdAt, LocalDate updatedAt, List<Comment> comments, Set<Tag> tags) {
+        this.id = id;
         this.title = title;
+        this.excerpt = excerpt;
         this.content = content;
+        this.authorId = authorId;
+        this.publishedAt = publishedAt;
+        this.isPublished = isPublished;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.comments = comments;
         this.tags = tags;
     }
+
     public int getId() {
         return id;
     }
@@ -93,11 +103,19 @@ public class Post {
         this.content = content;
     }
 
-    public Date getPublishedAt() {
+    public User getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(User authorId) {
+        this.authorId = authorId;
+    }
+
+    public LocalDate getPublishedAt() {
         return publishedAt;
     }
 
-    public void setPublishedAt(Date publishedAt) {
+    public void setPublishedAt(LocalDate publishedAt) {
         this.publishedAt = publishedAt;
     }
 
@@ -108,19 +126,20 @@ public class Post {
     public void setPublished(boolean published) {
         isPublished = published;
     }
-    public Date getCreatedAt() {
+
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDate getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -132,14 +151,6 @@ public class Post {
         this.comments = comments;
     }
 
-    public User getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(User authorId) {
-        this.authorId = authorId;
-    }
-
     public Set<Tag> getTags() {
         return tags;
     }
@@ -148,24 +159,20 @@ public class Post {
         this.tags = tags;
     }
 
-    public void addComment(Comment theComment){
-        if(comments == null){
-            comments = new ArrayList<>();
-        }
-        comments.add(theComment);
-    }
-
     @Override
     public String toString() {
-        return "Posts{" +
+        return "Post{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", excerpt='" + excerpt + '\'' +
                 ", content='" + content + '\'' +
+                ", authorId=" + authorId +
                 ", publishedAt=" + publishedAt +
                 ", isPublished=" + isPublished +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", comments=" + comments +
+                ", tags=" + tags +
                 '}';
     }
 }

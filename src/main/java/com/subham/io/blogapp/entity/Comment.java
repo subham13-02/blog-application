@@ -1,6 +1,8 @@
 package com.subham.io.blogapp.entity;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -9,32 +11,25 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @Column(name = "name")
     private String name;
-
     @Column(name = "email")
     private String email;
-
     @Column(name = "comment")
     private String commentText;
-
     @Column(name = "post_id")
     private int postId;
     @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-
+    @Temporal(TemporalType.DATE)
+    private LocalDate createdAt;
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
-
-
+    @Temporal(TemporalType.DATE)
+    private LocalDate updatedAt;
     public Comment(){
 
     }
 
-    public Comment(int id, String name, String email, String commentText, int postId, Date createdAt, Date updatedAt) {
+    public Comment(int id, String name, String email, String commentText, int postId, LocalDate createdAt, LocalDate updatedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -43,7 +38,6 @@ public class Comment {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
     public int getId() {
         return id;
     }
@@ -83,20 +77,19 @@ public class Comment {
     public void setPostId(int postId) {
         this.postId = postId;
     }
-
-    public Date getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDate getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
 

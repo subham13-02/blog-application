@@ -8,9 +8,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 @Transactional
@@ -18,9 +17,9 @@ public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
     private UserService userService;
-    Date date = new Date();
+    LocalDate date = LocalDate.now();
     @Autowired
-    public PostServiceImpl(PostRepository postRepository , UserService userService) {
+    public PostServiceImpl(PostRepository postRepository, UserService userService) {
         this.postRepository = postRepository;
         this.userService = userService;
     }
@@ -86,13 +85,73 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> search(String searchQuery,String sortBy) {
         List<Post> searchResults;
-        if(sortBy.equals("date")){
+//        if(sortBy.equals("newest")){
+//            searchResults = postRepository.findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContainingOrderByPublishedAtDesc(searchQuery, searchQuery, searchQuery, searchQuery);
+//        }else if(sortBy.equals("title")){
+//            searchResults = postRepository.findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContaining(searchQuery, searchQuery, searchQuery, searchQuery);
+//        } else{
+//            searchResults = postRepository.findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContaining(searchQuery, searchQuery, searchQuery, searchQuery);
+//        }
+        return null;
+    }
+
+    @Override
+    public List<Post> search(String searchQuery, String sortBy, Set<String> selectedTags, Set<String> selectedAuthor, String startingDate, String endingDate) {
+        List<Post> searchResults;
+        Set<Post> filterResult=new HashSet<>();
+        List<Post> finalResults=new ArrayList<>();
+
+        if(sortBy.equals("newest")){
             searchResults = postRepository.findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContainingOrderByPublishedAtDesc(searchQuery, searchQuery, searchQuery, searchQuery);
-        }else if(sortBy.equals("title")){
-            searchResults = postRepository.findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContainingOrderByTitle(searchQuery, searchQuery, searchQuery, searchQuery);
-        } else{
+        }else if(sortBy.equals("oldest")){
             searchResults = postRepository.findByTitleContainingOrContentContainingOrAuthorIdNameContainingOrTagsNameContaining(searchQuery, searchQuery, searchQuery, searchQuery);
         }
-        return searchResults;
+        else{
+            searchResults=postRepository.findAll();
+        }
+
+        if (selectedAuthor!= null) {
+            Set<Post> authorsResult = postRepository.findAllByAuthorIdNameIn(selectedAuthor);
+            if(!authorsResult.isEmpty()){
+                filterResult.addAll(authorsResult);
+            }
+        }
+        if (selectedTags!= null) {
+            Set<Post> tagsResult = postRepository.findAllByTagsNameIn(selectedTags);
+            if(tagsResult!= null){
+                filterResult.addAll(tagsResult);
+            }
+        }
+//        if (!(endingDate.isEmpty() || startingDate.isEmpty())) {
+//            if (!startingDate.isEmpty()) {
+//                startingDate = "0000-00-00";
+//            }
+//            if (!endingDate.isEmpty()) {
+//                endingDate = "9999-99-99";
+//            }
+//            Set<Post> dateResult = postRepository.findAllByPublishedAtBetween(startingDate, endingDate);
+//            if(!dateResult.isEmpty()){
+//                filterResult.addAll(dateResult);
+//            }
+//        }
+        for (Post post : searchResults) {
+            System.out.println(post);
+            if (filterResult.contains(post)) {
+                finalResults.add(post);
+            }
+        }
+        if(filterResult.isEmpty()){
+            finalResults = searchResults;
+        }
+//        for (Post post : filterResult){
+//            System.out.println("filter Result---------->"+post);
+//        }
+//        for (Post post : searchResults){
+//            System.out.println("Search Result---------->"+post);
+//        }
+//        for (Post post : finalResults){
+//            System.out.println("final Result---------->"+post);
+//        }
+        return finalResults;
     }
 }

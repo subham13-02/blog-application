@@ -36,14 +36,14 @@ public class PostController {
             }
         }
         model.addAttribute("tags", tags);
-
-        List<User> authors = new ArrayList<>();
+        Set<User> authors = new HashSet<>();
         for(Post post :posts){
             if(post.getAuthorId()!=null){
                 authors.add(post.getAuthorId());
             }
         }
         model.addAttribute("authors", authors);
+
         return "landing-page";
     }
     @GetMapping("/newpost")
@@ -86,30 +86,51 @@ public class PostController {
         return "redirect:/";
     }
     @PostMapping("/search")
-    public String search(@RequestParam(name="searchQuery") String searchQuery, @RequestParam(name="sortBy") String sortBy, Model model) {
+    public String search(@RequestParam(name="searchQuery",required = false) String searchQuery,
+                         @RequestParam(name="sortBy",required = false) String sortBy,
+                         @RequestParam(name = "selectedTags",required = false) Set<String> selectedTags,
+                         @RequestParam(name = "selectedAuthor",required = false) Set<String> selectedAuthor,
+                         @RequestParam(name = "startingDate",required = false) String startingDate,
+                         @RequestParam(name = "endingDate",required = false) String endingDate,
+                         Model model) {
         System.out.println("Search :"+searchQuery );
-        List<Post> searchResults = postService.search(searchQuery,sortBy);
-        model.addAttribute("posts", searchResults);
+        List<Post> posts = postService.search(searchQuery,sortBy, selectedTags, selectedAuthor, startingDate, endingDate);
+        model.addAttribute("posts", posts);
         model.addAttribute("searchQuery", searchQuery);
         model.addAttribute("sortBy", sortBy);
-        return "landing-page";
-    }
-    @PostMapping("/filter")
-    public String applyFilters(@RequestParam(name = "selectedTags") Set<String> selectedTags,
-                               @RequestParam(name = "selectedAuthor") List<String> selectedAuthor,
-                               @RequestParam(name = "startingDate") String startingDate,
-                               @RequestParam(name = "startingDate") String endingDate) {
+
+        System.out.println(startingDate+ " "+ endingDate);
+        Set<Tag> tags = new HashSet<>();
+        for(Post post :posts){
+            if(post.getTags()!=null){
+                tags.addAll(post.getTags());
+            }
+        }
+        model.addAttribute("tags", tags);
+        Set<User> authors = new HashSet<>();
+        for(Post post :posts){
+            if(post.getAuthorId()!=null){
+                authors.add(post.getAuthorId());
+            }
+        }
+
         if (selectedTags != null) {
             for (String tag : selectedTags) {
                 System.out.println("Selected tag: " + tag);
             }
         }
-        if (selectedTags != null) {
+        if (selectedAuthor != null) {
             for (String author : selectedAuthor) {
                 System.out.println("Selected author: " + author);
             }
         }
-        System.out.println(startingDate+ " "+ endingDate);
-        return "redirect:/";
+        model.addAttribute("authors", authors);
+        model.addAttribute("searchQuery", searchQuery);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("selectedTags", selectedTags);
+        model.addAttribute("selectedAuthor", selectedAuthor);
+        model.addAttribute("startingDate", startingDate);
+        model.addAttribute("endingDate", endingDate);
+        return "landing-page";
     }
 }

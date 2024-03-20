@@ -60,7 +60,7 @@
             padding: 5px;
         }
         .filter{
-            height:200px;
+            max-height:200px;
             overflow:auto;
         }
         form h3{
@@ -76,12 +76,15 @@
     <h2>My Blog Application</h2>
     <div class="right-nav">
         <form th:action="@{/search}" method="POST">
-            <input type="search" name="searchQuery" th:value="${searchQuery}" placeholder="search">
+            <input type="hidden" th:name="selectedTags">
+            <input type="hidden" th:name="selectedAuthor">
+            <input type="hidden" th:name="startingDate">
+            <input type="hidden" th:name="endingDate">
+            <input type="search" th:name="searchQuery" th:value="${searchQuery}" placeholder="search">
             <br><br>
             <select name="sortBy">
-                <option value="">Sort by</option>
-                <option value="date">Published Date</option>
-                <option value="title">Title</option>
+                <option value="newest" th:selected="${sortBy == 'newest'}">Sort By Newest</option>
+                <option value="oldest" th:selected="${sortBy == 'oldest'}">Sort By Oldest</option>
             </select>
             <button type="submit">Sort</button>
         </form>
@@ -91,25 +94,27 @@
 <div class="main">
     <div class="sidebar">
         <h2>Filters</h2>
-        <form id="filterForm" th:action="@{/filter}" th:method="POST" class="filters-container">
+        <form id="filterForm" th:action="@{/search}" th:method="POST" class="filters-container">
+            <input type="hidden" th:name="searchQuery" th:value="${searchQuery}">
+            <input type="hidden" th:name="sortBy" th:value="${sortBy}">
             <h3>Tags</h3>
-            <div class="filter">
+            <div class="filter" th:if="${selectedTags != null}">
                 <div th:each="tag : ${tags}" >
-                    <input type="checkbox" th:name="selectedTags" th:value="${tag.name}">
+                    <input type="checkbox" th:name="selectedTags" th:value="${tag.name}" th:checked="${selectedTags!=null and selectedTags.contains(tag.name)}">
                     <span th:text="${tag.name}"></span>
                 </div>
             </div>
             <h3>Authors</h3>
             <div class="filter">
                 <div th:each="author : ${authors}" >
-                    <input type="checkbox" th:name="selectedAuthor" th:value="${author.name}">
+                    <input type="checkbox" th:name="selectedAuthor" th:value="${author.name}" th:checked="${selectedAuthor!=null and selectedAuthor.contains(author.name)}">
                     <span th:text="${author.name}"></span>
                 </div>
             </div>
-            <label>From:</label>
-            <input type="date" th:name="startingDate" th:value="${startingDate}">
+            <h3>Date Range</h3>
             <br>
-            <label>To:</label>
+            <input type="date" th:name="startingDate" th:value="${startingDate}">
+            <p style="text-align:center">to</p>
             <input type="date" th:name="endingDate" th:value="${endingDate}">
             <br><br>
             <button type="submit">Apply Filters</button>

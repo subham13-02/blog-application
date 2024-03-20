@@ -7,13 +7,14 @@ import com.subham.io.blogapp.entity.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService {
-    Date date = new Date();
+    LocalDate date = LocalDate.now();
     private PostRepository postRepository;
     private PostService postService;
     private CommentRepository commentRepository;
@@ -23,7 +24,6 @@ public class CommentServiceImpl implements CommentService {
         this.postService = postService;
         this.commentRepository = commentRepository;
     }
-
     @Override
     public void addComment(int postId, Comment comment) {
         Post post = postService.fetchPostById(postId);
@@ -42,7 +42,6 @@ public class CommentServiceImpl implements CommentService {
     public void deleteCommentById(int commentId) {
         commentRepository.deleteById(commentId);
     }
-
     @Override
     public int getPostIdByCommentId(int commentId) {
         Optional<Comment> result = commentRepository.findById(commentId);
