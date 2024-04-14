@@ -1,0 +1,43 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title> Blog Post</title>
+    <style>
+        h1,form{
+            text-align:center;
+        }
+        input{
+            width:80%;
+            margin:10px;
+            padding:10px;
+        }
+        textarea{
+            width:80%;
+            height:60%;
+            margin:10px;
+            padding:10px;
+        }
+        button{
+            padding:15px;
+        }
+    </style>
+</head>
+<body>
+<h1>New/Update Blog Post</h1>
+
+<form th:action="@{/publishform}"  th:object="${post}" method="POST">
+    <input type="hidden" name="presentPostId" th:value="${presentPostId}">
+    <input  th:field="*{id}" type="hidden"/>
+    <input type="text" placeholder="Title" th:field="*{title}"/>
+    <br />
+    <input type="text" placeholder="Tags" name="tag" th:value="${tagsAsString}"/>
+
+
+    <input type="hidden" th:field="*{createdAt}"/>
+    <br>
+    <textarea type="text" placeholder="Write Your Blog Here..." th:field="*{content}"></textarea>
+    <br />
+    <input type="submit" value="Publish">
+</form>
+
+</body>
+</html>

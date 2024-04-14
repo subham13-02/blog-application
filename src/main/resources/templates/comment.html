@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Post Comment</title>
+    <style>
+        .comment{
+            padding:20px;
+            margin:20px;
+            border:2px solid black;
+            height:140px;
+            width:150px;
+        }
+    </style>
+</head>
+<body>
+<div id="comment-section">
+    <h2>Comments</h2>
+    <form th:action="@{/savecomment}" method="post">
+        <input type="hidden" name="postId" th:value="${post.id}" />
+        <input type="hidden" name="presentCommentId"  th:value="${presentCommentId}"/>
+        <input type="text" name="commentText" th:value="${commentName}" placeholder="Add your comment here">
+        <br />
+        <button type="submit">Submit</button>
+    </form>
+
+    <div class="comment" th:each="comment:${post.getComments()}">
+            <p th:text="${comment.name}"></p>
+            <input type="hidden" name="commentId" th:value="${comment.id}" />
+            <input type="hidden" name="commentPostId" th:value="${comment.postId}" />
+            <p th:text="${comment.email}"></p>
+            <p th:text="${comment.comment}"></p>
+        <div class="update-delete" sec:authorize="hasRole('ADMIN') or hasRole('AUTHOR')" >
+            <a th:href="@{'/updatecomment/'+${comment.id} + '/' + ${comment.postId}}" th:if="${#authorization.expression('hasRole(''ADMIN'')')or (post.author.name == currentUser)}">
+                <button>Update</button>
+            </a>
+            <a th:href="@{'/deletecomment/' + ${comment.id} + '/' + ${comment.postId}}" th:if="${#authorization.expression('hasRole(''ADMIN'')')or (post.author.name == currentUser)}">
+                <button>Delete</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
